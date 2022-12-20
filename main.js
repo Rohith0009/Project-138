@@ -31,14 +31,30 @@ function setup() {
   video.size(700,600)
   video.hide()
   pose_net = ml5.poseNet(video, modelloaded);
+  pose_net.on("pose", gotPoses);
 }
+
+function gotPoses(results) {
+  if (results.length > 0) {
+    wristX = results[0].pose.rightWrist.x;
+    wristY = results[0].pose.rightWrist.y;
+    console.log(`Nose X Is ${wristX} and Nose Y Is ${wristY}`);
+    scoreRightWrist = results[0].pose.keypoints[10].score;
+  }
+}
+
 
 function modelloaded(){
   console.log("Model Has Loaded")
 }
 
 function draw() {
-  image(video, 0,0, 700, 600)
+  if (scoreRightWrist > 0.2){
+    fill("#86bbd8");
+    stroke("#86bbd8");
+    circle(rightWristX, rightWristY, 20);
+  }
+   image(video, 0, 0, 700, 600);
 
   background(0);
 
