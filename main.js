@@ -1,4 +1,5 @@
 /*created by prashant shukla */
+game_status =""
 
 var paddle2 = 10,
   paddle1 = 10;
@@ -48,6 +49,11 @@ function modelloaded(){
   console.log("Model Has Loaded")
 }
 
+function startGame(){
+  game_status = "start";
+  document.getElementById("status").innerHTML ="The Game Has Loaded!";
+}
+
 function draw() {
   if (scoreRightWrist > 0.2){
     fill("#86bbd8");
@@ -93,6 +99,9 @@ function draw() {
 
   //function move call which in very important
   move();
+  if (game_status == "start"){
+    
+  }
 }
 
 //function reset when ball does notcame in the contact of padde
