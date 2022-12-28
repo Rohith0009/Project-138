@@ -1,5 +1,4 @@
 /*created by prashant shukla */
-game_status =""
 
 var paddle2 = 10,
   paddle1 = 10;
@@ -9,12 +8,17 @@ var paddle1X = 10,
 var paddle2Y = 685,
   paddle2Height = 70;
 
+rightWristY = 0;
+rightWristX = 0;
+scoreRightWrist = 0;
+
+game_status = "";
+
 var score1 = 0,
   score2 = 0;
 var paddle1Y;
 
 var playerscore = 0;
-var audio1;
 var pcscore = 0;
 //ball x and y and speedx speed y and radius
 var ball = {
@@ -24,6 +28,11 @@ var ball = {
   dx: 3,
   dy: 3,
 };
+
+function preload(){
+  ball_touch_paddel = loadSound("ball_touch_paddel.wav");
+  missed = loadSound('missed.wav');
+}
 
 function setup() {
   var canvas = createCanvas(700, 600);
@@ -79,7 +88,7 @@ function draw() {
   fill(250, 0, 0);
   stroke(0, 0, 250);
   strokeWeight(0.5);
-  paddle1Y = mouseY;
+  paddle1Y = rightWristY;
   rect(paddle1X, paddle1Y, paddle1, paddle1Height, 100);
 
   //pc computer paddle
@@ -147,8 +156,10 @@ function move() {
   if (ball.x - (2.5 * ball.r) / 2 < 0) {
     if (ball.y >= paddle1Y && ball.y <= paddle1Y + paddle1Height) {
       ball.dx = -ball.dx + 0.5;
+      ball_touch_paddel.play()
       playerscore++;
     } else {
+      missed.play();
       pcscore++;
       reset();
       navigator.vibrate(100);
@@ -162,7 +173,7 @@ function move() {
     stroke("white");
     textSize(25);
     text("Game Over!☹☹", width / 2, height / 2);
-    text("Reload The Page!", width / 2, height / 2 + 30);
+    text("Press on The Reload Button To Play again!", width / 2, height / 2 + 30);
     noLoop();
     pcscore = 0;
   }
@@ -189,4 +200,10 @@ function paddleInCanvas() {
   if (mouseY < 0) {
     mouseY = 0;
   }
+}
+
+function restart(){
+  pcscore = 0;
+  playerscore = 0;
+  loop()
 }
